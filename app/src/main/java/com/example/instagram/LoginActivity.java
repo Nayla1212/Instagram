@@ -2,17 +2,14 @@ package com.example.instagram;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.instagram.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -20,7 +17,7 @@ import com.parse.SignUpCallback;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static final String TAG = "com.example.instagram.LoginActivity";
+    public static final String TAG = "LoginActivity";
     public EditText etUsername;
     public EditText etPassword;
     public Button btnLogin;
@@ -29,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
 
         //If user already logged in, navigate to main activity
         if(ParseUser.getCurrentUser() != null){
