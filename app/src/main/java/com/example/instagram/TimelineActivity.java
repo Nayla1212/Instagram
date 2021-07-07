@@ -44,7 +44,6 @@ public class TimelineActivity extends AppCompatActivity {
         queryPosts();// query posts from Parstagram
 
         //Swipe Refresh Layout
-
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);// Lookup the swipe container view
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {// Setup refresh listener which triggers new data loading
             @Override
