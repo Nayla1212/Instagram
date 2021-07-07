@@ -62,6 +62,7 @@ public class ComposeActivity extends AppCompatActivity {
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 savePost(description, currentUser, photoFile);
+
             }
         });
 
@@ -89,10 +90,15 @@ public class ComposeActivity extends AppCompatActivity {
                 Log.i(TAG, "Post save was successful");
                 etDescription.setText("");
                 ivPostImage.setImageResource(0);
+                navigateToTimeline();
             }
         });
     }
 
+    private void navigateToTimeline() {
+        Intent intent = new Intent(this, TimelineActivity.class);
+        startActivity(intent);
+    }
 
     private void launchCamera() {
         // create Intent to take a picture and return control to the calling application

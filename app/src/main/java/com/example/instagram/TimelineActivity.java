@@ -10,11 +10,14 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,7 @@ public class TimelineActivity extends AppCompatActivity {
     private RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
+    private SwipeRefreshLayout swipeContainer;
 
 
     @Override
@@ -38,20 +42,58 @@ public class TimelineActivity extends AppCompatActivity {
         rvPosts.setAdapter(adapter);// set the adapter on the recycler view
         rvPosts.setLayoutManager(new LinearLayoutManager(this));// set the layout manager on the recycler view
         queryPosts();// query posts from Parstagram
+
+        //Swipe Refresh Layout
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);// Lookup the swipe container view
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {// Setup refresh listener which triggers new data loading
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                fetchTimelineAsync(0);
+            }
+        });
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright, // Configure the refreshing colors
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
+    public void fetchTimelineAsync(int page) {
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);// specify what type of data we want to query - Post.class
+        query.include(Post.KEY_USER); // include data referred by user key
+        query.setLimit(20); // limit query to latest 20 items
+        query.addDescendingOrder("createdAt"); // order posts by creation date (newest first)
+        query.findInBackground(new FindCallback<Post>() { // start an asynchronous call for posts
+            @Override
+            public void done(List<Post> posts, ParseException e) {
+                // check for errors
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting posts", e);
+                    return;
+                }
+
+                // for debugging purposes let's print every post description to logcat
+                for (Post post : posts) {
+                    Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
+                }
+                allPosts.addAll(posts);
+                adapter.clear();
+                adapter.addAll(posts);
+                adapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
+            }
+        });
+    }
 
     private void queryPosts() {
-        // specify what type of data we want to query - Post.class
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        // include data referred by user key
-        query.include(Post.KEY_USER);
-        // limit query to latest 20 items
-        query.setLimit(20);
-        // order posts by creation date (newest first)
-        query.addDescendingOrder("createdAt");
-        // start an asynchronous call for posts
-        query.findInBackground(new FindCallback<Post>() {
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);// specify what type of data we want to query - Post.class
+        query.include(Post.KEY_USER); // include data referred by user key
+        query.setLimit(20); // limit query to latest 20 items
+        query.addDescendingOrder("createdAt"); // order posts by creation date (newest first)
+        query.findInBackground(new FindCallback<Post>() { // start an asynchronous call for posts
             @Override
             public void done(List<Post> posts, ParseException e) {
                 // check for errors
