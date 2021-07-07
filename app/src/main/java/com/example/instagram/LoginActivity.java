@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, FeedActivity.class);
         startActivity(intent);
         finish(); //finishes the login activity - if user tries to backtrace once logged in, it doesn't take them back to login activity page
     }

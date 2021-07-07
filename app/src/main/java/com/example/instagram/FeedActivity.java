@@ -19,6 +19,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -28,13 +30,16 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class FeedActivity extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    public static final String TAG = "FeedActivity";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
     private Button btnLogOut;
+
+    //Post
     private Button btnSubmit;
     private Button btnCaptureImage;
     private EditText etDescription;
@@ -42,30 +47,43 @@ public class MainActivity extends AppCompatActivity {
     private File photoFile;
     public String photoFileName = "photo.jpg";
 
+    //Feed
+    private RecyclerView rvPosts;
+    protected PostsAdapter adapter;
+    protected List<Post> allPosts;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_compose);
 
         btnLogOut = findViewById(R.id.btnLogOut);
+
+        //Post
         btnSubmit = findViewById(R.id.btnSubmit);
         btnCaptureImage = findViewById(R.id.btnCaptureImage);
         etDescription = findViewById(R.id.etDescription);
         ivPostImage = findViewById(R.id.ivPostImage);
-        
-        //queryPosts();
+
+        //Feed
+        rvPosts = findViewById(R.id.rvPosts);
+        allPosts = new ArrayList<>();
+        adapter = new PostsAdapter(this, allPosts);
+        rvPosts.setAdapter(adapter);// set the adapter on the recycler view
+        rvPosts.setLayoutManager(new LinearLayoutManager(this));// set the layout manager on the recycler view
+        queryPosts();// query posts from Parstagram
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String description = etDescription.getText().toString();
                 if(description.isEmpty()){
-                    Toast.makeText(MainActivity.this, "Description cannot be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FeedActivity.this, "Description cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(photoFile == null || ivPostImage.getDrawable() == null){
-                    Toast.makeText(MainActivity.this, "There is no image!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FeedActivity.this, "There is no image!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
@@ -90,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         // wrap File object into a content provider
         // required for API >= 24
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(MainActivity.this, "com.codepath.fileprovider", photoFile);
+        Uri fileProvider = FileProvider.getUriForFile(FeedActivity.this, "com.codepath.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
@@ -142,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if(e != null){
                     Log.e(TAG, "Error while saving", e);
-                    Toast.makeText(MainActivity.this, "Error while saving", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FeedActivity.this, "Error while saving", Toast.LENGTH_SHORT).show();
                 }
                 Log.i(TAG, "Post save was successful");
                 etDescription.setText("");
@@ -152,18 +170,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void queryPosts() {
+        // specify what type of data we want to query - Post.class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        // include data referred by user key
         query.include(Post.KEY_USER);
+        // limit query to latest 20 items
+        query.setLimit(20);
+        // order posts by creation date (newest first)
+        query.addDescendingOrder("createdAt");
+        // start an asynchronous call for posts
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
-                if(e != null){
+                // check for errors
+                if (e != null) {
                     Log.e(TAG, "Issue with getting posts", e);
                     return;
                 }
-                for(Post post: posts){
-                    Log.i(TAG, "Post: " + post.getDescription() + "username: " + post.getUser().getUsername());
+
+                // for debugging purposes let's print every post description to logcat
+                for (Post post : posts) {
+                    Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
                 }
+
+                // save received posts to list and notify adapter of new data
+                allPosts.addAll(posts);
+                adapter.notifyDataSetChanged();
             }
         });
     }
