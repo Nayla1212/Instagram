@@ -1,5 +1,6 @@
 package com.example.instagram;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //If user already logged in, navigate to main activity
         if(ParseUser.getCurrentUser() != null){

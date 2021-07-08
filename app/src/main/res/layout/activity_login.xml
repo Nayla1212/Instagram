@@ -9,6 +9,13 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:src="@drawable/instagram_script" />
 
     <EditText
         android:id="@+id/etUsername"
@@ -32,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:backgroundTint="#0095F6"
         android:text="Login" />
 
     <Button
@@ -39,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:backgroundTint="#4DC33B"
         android:text="Sign Up" />
 
 </LinearLayout>
