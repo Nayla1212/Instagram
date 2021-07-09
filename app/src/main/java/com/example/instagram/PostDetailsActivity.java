@@ -25,6 +25,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseFile;
 
 import org.parceler.Parcels;
+import org.w3c.dom.Text;
 
 import java.util.Date;
 
@@ -34,7 +35,9 @@ public class PostDetailsActivity extends AppCompatActivity {
     private TextView tvFeedUsername;
     private ImageView ivFeedImage;
     private TextView tvFeedDescription;
+    private TextView tvPostUsername;
     private TextView tvTimeAgo;
+    private TextView tvNumberLikes;
     Post post;
 
     public PostDetailsActivity(){};
@@ -53,6 +56,8 @@ public class PostDetailsActivity extends AppCompatActivity {
         ivFeedImage = findViewById(R.id.ivFeedImage);
         tvFeedDescription = findViewById(R.id.tvFeedDescription);
         tvTimeAgo = findViewById(R.id.tvTimeAgo);
+        tvPostUsername = findViewById(R.id.tvPostUsername);
+        tvNumberLikes = findViewById(R.id.tvNumberLikes);
 
         // unwrap the movie passed in via intent, using its simple name as a key
         post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
@@ -64,6 +69,8 @@ public class PostDetailsActivity extends AppCompatActivity {
             Glide.with(this).load(image.getUrl()).into(ivFeedImage);
         }
         tvTimeAgo.setText(post.getTimeAgo());
+        tvPostUsername.setText(post.getUser().getUsername());
+        tvNumberLikes.setText("" + post.getLikes() + " Likes");
     }
 
     private void startComposeActivity() {

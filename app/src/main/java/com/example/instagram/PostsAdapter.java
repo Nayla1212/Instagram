@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -70,6 +71,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
         private ImageView ivFeedImage;
         private TextView tvFeedDescription;
         private TextView tvTimeAgo;
+        private TextView tvPostUsername;
+        private TextView tvNumberLikes;
+        private ImageButton ibLike;
+        private ImageButton ibComment;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,8 +82,30 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
             ivFeedImage = itemView.findViewById(R.id.ivFeedImage);
             tvFeedDescription = itemView.findViewById(R.id.tvFeedDescription);
             tvTimeAgo = itemView.findViewById(R.id.tvTimeAgo);
+            tvPostUsername = itemView.findViewById(R.id.tvPostUsername);
+            tvNumberLikes = itemView.findViewById(R.id.tvNumberLikes);
+            ibLike = itemView.findViewById(R.id.ibLike);
+            ibComment = itemView.findViewById(R.id.ibComment);
 
             itemView.setOnClickListener(this);
+
+            ibLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Post post = posts.get(position);
+                    int likes = post.getLikes().intValue() + 1;
+                    post.setLike(likes);
+
+                }
+            });
+
+            ibComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
 
 
@@ -91,6 +118,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
                 Glide.with(context).load(image.getUrl()).into(ivFeedImage);
             }
             tvTimeAgo.setText(post.getTimeAgo());
+            tvPostUsername.setText(post.getUser().getUsername());
+            tvNumberLikes.setText("" + post.getLikes() + " Likes");
         }
 
 
