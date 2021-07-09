@@ -103,7 +103,7 @@ public class TimelineActivityFragment extends Fragment {
         });
     }
 
-    private void queryPosts() {
+    protected void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);// specify what type of data we want to query - Post.class
         query.include(Post.KEY_USER); // include data referred by user key
         query.setLimit(20); // limit query to latest 20 items

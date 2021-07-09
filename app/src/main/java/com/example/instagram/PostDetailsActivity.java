@@ -3,16 +3,23 @@ package com.example.instagram;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
+import com.example.instagram.fragments.ComposeActivityFragment;
+import com.example.instagram.fragments.TimelineActivityFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
@@ -41,23 +48,6 @@ public class PostDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.instagram_script);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-
-        //Handling bottom navigation toolbar
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.btnHome:
-                        startHomeActivity();
-                        return true;
-                    case R.id.btnComposeActivity:
-                        startComposeActivity();
-                        return true;
-                    default: return true;
-                }
-            }
-        });
 
         tvFeedUsername = findViewById(R.id.tvFeedUsername);
         ivFeedImage = findViewById(R.id.ivFeedImage);

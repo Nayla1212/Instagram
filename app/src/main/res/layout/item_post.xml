@@ -20,13 +20,15 @@
         android:layout_height="300dp"
         android:scaleType="centerCrop"
         tools:srcCompat="@tools:sample/avatars" />
+    
 
     <TextView
         android:id="@+id/tvFeedDescription"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         tools:text="trying to look hipster" />
+
 
     <TextView
         android:id="@+id/tvTimeAgo"
@@ -34,5 +36,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         tools:text="5 minutes ago" />
+
 
 </LinearLayout>

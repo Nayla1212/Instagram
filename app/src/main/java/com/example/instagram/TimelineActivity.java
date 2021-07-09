@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.instagram.fragments.ComposeActivityFragment;
+import com.example.instagram.fragments.ProfileActivityFragment;
 import com.example.instagram.fragments.TimelineActivityFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
@@ -81,9 +82,13 @@ public class TimelineActivity extends AppCompatActivity {
                         fragment = new ComposeActivityFragment();
                         break;
                     case R.id.btnHome:
-                    default:
                         Toast.makeText(TimelineActivity.this, "Home", Toast.LENGTH_SHORT).show();
                         fragment = new TimelineActivityFragment();
+                        break;
+                    case R.id.btnProfile:
+                    default:
+                        Toast.makeText(TimelineActivity.this, "Profile", Toast.LENGTH_SHORT).show();
+                        fragment = new ProfileActivityFragment();
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();

@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.instagram.fragments.ComposeActivityFragment;
+import com.example.instagram.fragments.ProfileActivityFragment;
 import com.example.instagram.fragments.TimelineActivityFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseException;
@@ -78,9 +79,13 @@ public class ComposeActivity extends AppCompatActivity {
                         fragment = new ComposeActivityFragment();
                         break;
                     case R.id.btnHome:
-                    default:
                         Toast.makeText(ComposeActivity.this, "Home", Toast.LENGTH_SHORT).show();
                         fragment = new TimelineActivityFragment();
+                        break;
+                    case R.id.btnProfile:
+                    default:
+                        Toast.makeText(ComposeActivity.this, "Profile", Toast.LENGTH_SHORT).show();
+                        fragment = new ProfileActivityFragment();
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();

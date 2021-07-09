@@ -19,4 +19,12 @@
         android:fitsSystemWindows="true"
         />
 
+    <item
+        android:id="@+id/btnProfile"
+        android:icon="@drawable/profile"
+        android:title="Profile"
+        app:showAsAction="always"
+        android:fitsSystemWindows="true"
+        />
+
 </menu>

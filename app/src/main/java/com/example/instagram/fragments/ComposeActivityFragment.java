@@ -153,8 +153,9 @@ public class ComposeActivityFragment extends Fragment {
     }
 
     private void navigateToTimeline() {
-        Intent intent = new Intent(getContext(), ComposeActivityFragment.class);
-        startActivity(intent);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.flContainer, new TimelineActivityFragment())
+                .commit();
     }
 
     @Override
