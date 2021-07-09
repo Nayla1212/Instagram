@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,6 +24,8 @@ import org.parceler.Parcels;
 
 import java.util.Date;
 import java.util.List;
+
+import static com.parse.Parse.getApplicationContext;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
 
@@ -78,17 +82,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             tvFeedUsername = itemView.findViewById(R.id.tvFeedUsername);
             ivFeedImage = itemView.findViewById(R.id.ivFeedImage);
             tvFeedDescription = itemView.findViewById(R.id.tvFeedDescription);
             tvTimeAgo = itemView.findViewById(R.id.tvTimeAgo);
             tvPostUsername = itemView.findViewById(R.id.tvPostUsername);
             tvNumberLikes = itemView.findViewById(R.id.tvNumberLikes);
-            ibLike = itemView.findViewById(R.id.ibLike);
-            ibComment = itemView.findViewById(R.id.ibComment);
+            ibLike = (ImageButton) itemView.findViewById(R.id.ibLike);
+            ibComment = (ImageButton) itemView.findViewById(R.id.ibComment);
 
-            itemView.setOnClickListener(this);
-
+            /*
             ibLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -99,13 +103,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
 
                 }
             });
-
-            ibComment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
+             */
         }
 
 
@@ -120,19 +118,29 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
             tvTimeAgo.setText(post.getTimeAgo());
             tvPostUsername.setText(post.getUser().getUsername());
             tvNumberLikes.setText("" + post.getLikes() + " Likes");
-        }
 
+            ibLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Post post = posts.get(position);
+                    int likes = post.getLikes().intValue() + 1;
+                    post.setLike(likes);
+                    tvNumberLikes.setText("" + post.getLikes() + " Likes");
+                    ibLike.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.like_active));
+                }
+            });
+        }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
+            Post post = posts.get(position);
             if(position != RecyclerView.NO_POSITION){
-                Post post = posts.get(position);
                 Intent intent = new Intent(context, PostDetailsActivity.class);
                 intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
                 context.startActivity(intent);
             }
-
         }
     }
 }

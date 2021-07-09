@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ public class PostDetailsActivity extends AppCompatActivity {
     private TextView tvPostUsername;
     private TextView tvTimeAgo;
     private TextView tvNumberLikes;
+    private ImageButton ibLike;
+    private ImageButton ibComment;
     Post post;
 
     public PostDetailsActivity(){};
@@ -58,6 +61,8 @@ public class PostDetailsActivity extends AppCompatActivity {
         tvTimeAgo = findViewById(R.id.tvTimeAgo);
         tvPostUsername = findViewById(R.id.tvPostUsername);
         tvNumberLikes = findViewById(R.id.tvNumberLikes);
+        ibLike = findViewById(R.id.ibLike);
+        ibComment = findViewById(R.id.ibComment);
 
         // unwrap the movie passed in via intent, using its simple name as a key
         post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
@@ -71,15 +76,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         tvTimeAgo.setText(post.getTimeAgo());
         tvPostUsername.setText(post.getUser().getUsername());
         tvNumberLikes.setText("" + post.getLikes() + " Likes");
-    }
 
-    private void startComposeActivity() {
-        Intent intent = new Intent(this, ComposeActivity.class);
-        startActivity(intent);
-    }
 
-    private void startHomeActivity() {
-        Intent intent = new Intent(this, TimelineActivity.class);
-        startActivity(intent);
     }
 }

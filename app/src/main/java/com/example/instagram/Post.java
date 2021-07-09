@@ -1,13 +1,17 @@
 package com.example.instagram;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.io.File;
 import java.util.Date;
 
 @ParseClassName("Post")
@@ -45,7 +49,10 @@ public class Post extends ParseObject {
         return calculateTimeAgo(this.getCreatedAt());
     }
 
-    public void setLike(Number likes){put(KEY_LIKES, likes);}
+    public void setLike(Number likes){
+        put(KEY_LIKES, likes);
+        savePost();
+    }
 
     public Number getLikes(){return getNumber(KEY_LIKES);}
 
@@ -83,5 +90,16 @@ public class Post extends ParseObject {
         }
 
         return "";
+    }
+
+    private void savePost() {
+        this.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null){
+                    Log.e("POST", "Error while saving", e);
+                }
+            }
+        });
     }
 }
