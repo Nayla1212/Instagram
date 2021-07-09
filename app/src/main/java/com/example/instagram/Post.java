@@ -16,6 +16,7 @@ import java.util.Date;
 
 @ParseClassName("Post")
 public class Post extends ParseObject {
+    public static final String TAG = "Post";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER="user";
@@ -97,7 +98,7 @@ public class Post extends ParseObject {
             @Override
             public void done(ParseException e) {
                 if(e != null){
-                    Log.e("POST", "Error while saving", e);
+                    Log.e(TAG, "Error while saving", e);
                 }
             }
         });

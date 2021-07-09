@@ -70,8 +70,6 @@ public class TimelineActivity extends AppCompatActivity {
         bottomNavigationView.setItemIconTintList(iconColorStates);
         bottomNavigationView.setItemTextColor(iconColorStates);
 
-
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

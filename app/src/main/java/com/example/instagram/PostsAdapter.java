@@ -79,6 +79,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
         private TextView tvNumberLikes;
         private ImageButton ibLike;
         private ImageButton ibComment;
+        private boolean liked;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -91,19 +92,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
             tvNumberLikes = itemView.findViewById(R.id.tvNumberLikes);
             ibLike = (ImageButton) itemView.findViewById(R.id.ibLike);
             ibComment = (ImageButton) itemView.findViewById(R.id.ibComment);
-
-            /*
-            ibLike.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    Post post = posts.get(position);
-                    int likes = post.getLikes().intValue() + 1;
-                    post.setLike(likes);
-
-                }
-            });
-             */
+            liked = false;
         }
 
 
@@ -122,12 +111,18 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>{
             ibLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    Post post = posts.get(position);
-                    int likes = post.getLikes().intValue() + 1;
-                    post.setLike(likes);
-                    tvNumberLikes.setText("" + post.getLikes() + " Likes");
-                    ibLike.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.like_active));
+                    if(liked == true){
+                        Toast.makeText(context, "You already liked this", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        int position = getAdapterPosition();
+                        Post post = posts.get(position);
+                        int likes = post.getLikes().intValue() + 1;
+                        post.setLike(likes);
+                        tvNumberLikes.setText("" + post.getLikes() + " Likes");
+                        ibLike.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.like_active));
+                        liked = true;
+                    }
                 }
             });
         }
